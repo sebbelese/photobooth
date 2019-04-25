@@ -33,6 +33,7 @@ modules = (
     ('gphoto2-commandline', 'CameraGphoto2CommandLine',
      'CameraGphoto2CommandLine'),
     ('opencv', 'CameraOpenCV', 'CameraOpenCV'),
+    ('droidcam-opencv', 'CameraDroidCamOpenCV', 'CameraDroidCamOpenCV'),
     ('picamera', 'CameraPicamera', 'CameraPicamera'),
     ('dummy', 'CameraDummy', 'CameraDummy'))
 
