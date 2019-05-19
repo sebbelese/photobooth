@@ -215,18 +215,17 @@ class PyQt5Gui(GuiSkeleton):
         self._setWidget(Frames.WaitMessage(_('Processing picture...')))
 
     def showReview(self, state):
-
         picture = Image.open(state.picture)
         self._picture = ImageQt.ImageQt(picture)
         review_time = self._cfg.getInt('Photobooth', 'display_time') * 1000
         self._setWidget(Frames.PictureMessage(self._picture))
         QtCore.QTimer.singleShot(
             review_time,
-            lambda: self._comm.send(Workers.MASTER, GuiEvent('postprocess')))
+            lambda: self._comm.send(Workers.MASTER, GuiEvent('postprocess')))    
         self._postprocess.do(self._picture)
 
-    def showPostprocess(self, state):
 
+    def showPostprocess(self, state):
         tasks = self._postprocess.get(self._picture)
         postproc_t = self._cfg.getInt('Photobooth', 'postprocess_time')
 
@@ -240,7 +239,8 @@ class PyQt5Gui(GuiSkeleton):
         if self._is_escape and event.key() == QtCore.Qt.Key_Escape:
             self._comm.send(Workers.MASTER,
                             TeardownEvent(TeardownEvent.WELCOME))
-        elif self._is_trigger and event.key() == QtCore.Qt.Key_Space:
+        elif self._is_trigger and ((event.key() == QtCore.Qt.Key_K) or (event.key() == QtCore.Qt.Key_L) or (event.key() == QtCore.Qt.Key_M) or (event.key() == QtCore.Qt.Key_O) or (event.key() == QtCore.Qt.Key_Semicolon) or (event.key() == QtCore.Qt.Key_Colon)):
+            self._is_trigger = False
             self._comm.send(Workers.MASTER, GuiEvent('trigger'))
 
     def _showSetDateTime(self):

@@ -18,7 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from .. import StateMachine
-
+import urllib.request
 
 class GuiSkeleton:
 
@@ -90,12 +90,15 @@ class GuiSkeleton:
         elif isinstance(state, StateMachine.GreeterState):
             self.showGreeter(state)
         elif isinstance(state, StateMachine.CountdownState):
+            urllib.request.urlopen('http://0.0.0.0:4747/cam/1/led_toggle')
+            urllib.request.urlopen('http://0.0.0.0:4747/cam/1/af')
             self.showCountdown(state)
         elif isinstance(state, StateMachine.CaptureState):
             self.showCapture(state)
         elif isinstance(state, StateMachine.AssembleState):
             self.showAssemble(state)
         elif isinstance(state, StateMachine.ReviewState):
+            urllib.request.urlopen('http://0.0.0.0:4747/cam/1/led_toggle')
             self.showReview(state)
         elif isinstance(state, StateMachine.PostprocessState):
             self.showPostprocess(state)

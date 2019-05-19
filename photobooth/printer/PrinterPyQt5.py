@@ -18,6 +18,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import subprocess
+import os
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtPrintSupport import QPrinter
@@ -50,17 +52,17 @@ class PrinterPyQt5(Printer):
         if self._print_pdf:
             self._printer.setOutputFileName('print_%d.pdf' % self._counter)
             self._counter += 1
+        else:
+            logging.info('Printing picture')
 
-        logging.info('Printing picture')
+            picture = picture.scaled(self._printer.paperRect().size(),
+                                     QtCore.Qt.IgnoreAspectRatio,
+                                     QtCore.Qt.SmoothTransformation)
 
-        picture = picture.scaled(self._printer.paperRect().size(),
-                                 QtCore.Qt.KeepAspectRatio,
-                                 QtCore.Qt.SmoothTransformation)
+            #printable_size = self._printer.pageRect(QPrinter.DevicePixel)
+            picture.save("/tmp/selphy.jpg")
+            os.system("/home/sblaise/Apps/photobooth/photobooth/printer/selphy_go.sh")
 
-        printable_size = self._printer.pageRect(QPrinter.DevicePixel)
-        origin = ((printable_size.width() - picture.width()) // 2,
-                  (printable_size.height() - picture.height()) // 2)
-
-        painter = QtGui.QPainter(self._printer)
-        painter.drawImage(QtCore.QPoint(*origin), picture)
-        painter.end()
+            #painter = QtGui.QPainter(self._printer)
+            #painter.drawImage(QtCore.QPoint(*origin), picture)
+            #painter.end()

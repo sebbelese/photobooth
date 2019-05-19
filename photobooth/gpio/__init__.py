@@ -18,6 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import urllib.request
 from colorsys import hsv_to_rgb
 from time import sleep
 
@@ -244,7 +245,8 @@ class Entities:
             self._lamps[index].off()
 
     def lampToggle(self, index):
-
+        print("flash")
+        urllib.request.urlopen('http://0.0.0.0:4747/cam/1/led_toggle')
         if index is not None:
             self._lamps[index].toggle()
 

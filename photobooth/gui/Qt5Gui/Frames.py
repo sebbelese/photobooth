@@ -162,11 +162,11 @@ class CaptureMessage(QtWidgets.QFrame):
 
 class PictureMessage(QtWidgets.QFrame):
 
-    def __init__(self, picture):
+    def __init__(self, picture, text=None):
 
         super().__init__()
         self.setObjectName('PictureMessage')
-
+        self._text = text
         self._picture = picture
 
     def _paintPicture(self, painter):
@@ -181,6 +181,12 @@ class PictureMessage(QtWidgets.QFrame):
         origin = ((self.width() - pix.width()) // 2,
                   (self.height() - pix.height()) // 2)
         painter.drawPixmap(QtCore.QPoint(*origin), pix)
+        font=painter.font() ;
+        font.setPointSize ( 1200 );
+        painter.setPen(QtCore.Qt.white);
+        if (self._text):
+                 painter.drawText(QtCore.QRect(0, 0,self.width(), self.height()), QtCore.Qt.AlignBottom, self._text)
+        self.update()
 
     def paintEvent(self, event):
 
@@ -340,8 +346,23 @@ class PostprocessMessage(Widgets.TransparentOverlay):
 
         buttons = [createButton(task) for task in tasks]
         buttons.append(QtWidgets.QPushButton(_('Start over')))
+        #QtWidgets.QShortcut(QtCore.Qt.Key_Enter, buttons[-1], buttons[-1].animateClick)
         buttons[-1].clicked.connect(idle_handle)
-
+        #buttons[-1].setShortcuts([QtGui.QKeySequence(QtCore.Qt.Key_S), QtGui.QKeySequence(QtCore.Qt.Key_D), QtGui.QKeySequence(QtCore.Qt.Key_F), QtGui.QKeySequence(QtCore.Qt.Key_E), QtGui.QKeySequence(QtCore.Qt.Key_X), QtGui.QKeySequence(QtCore.Qt.Key_C)]);
+        buttons[-1].setStyleSheet("background-color: rgba(255, 0, 0, 50%)")
+        buttons[0].setStyleSheet("background-color: rgba(0, 0, 255, 50%)")
+        QtWidgets.QShortcut(QtCore.Qt.Key_S, buttons[0], buttons[0].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_D, buttons[0], buttons[0].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_F, buttons[0], buttons[0].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_E, buttons[0], buttons[0].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_X, buttons[0], buttons[0].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_C, buttons[0], buttons[0].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_K, buttons[-1], buttons[-1].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_L, buttons[-1], buttons[-1].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_M, buttons[-1], buttons[-1].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_O, buttons[-1], buttons[-1].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_Semicolon, buttons[-1], buttons[-1].animateClick)
+        QtWidgets.QShortcut(QtCore.Qt.Key_Colon, buttons[-1], buttons[-1].animateClick)
         button_lay = QtWidgets.QGridLayout()
         for i, button in enumerate(buttons):
             pos = divmod(i, 2)

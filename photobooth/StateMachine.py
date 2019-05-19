@@ -463,7 +463,9 @@ class PostprocessState(State):
         super().__init__()
 
     def handleEvent(self, event, context):
-
+        if ((isinstance(event, GuiEvent) or isinstance(event, GpioEvent)) and
+           event.name == 'trigger'):
+            context.state = IdleState()
         if ((isinstance(event, GuiEvent) or isinstance(event, GpioEvent)) and
            event.name == 'idle'):
             context.state = IdleState()

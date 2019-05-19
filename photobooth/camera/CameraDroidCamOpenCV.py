@@ -24,7 +24,7 @@ from PIL import Image
 import cv2
 
 from .CameraInterface import CameraInterface
-
+import urllib.request
 
 class CameraDroidCamOpenCV(CameraInterface):
 
@@ -35,10 +35,12 @@ class CameraDroidCamOpenCV(CameraInterface):
         self.hasIdle = True
 
         logging.info('Using OpenCV')
+        urllib.request.urlopen('http://0.0.0.0:4747/override')
         self._cap = cv2.VideoCapture('http://0.0.0.0:4747/mjpegfeed?960x720')
 
     def setActive(self):
         if not self._cap.isOpened():
+            urllib.request.urlopen('http://0.0.0.0:4747/override')
             self._cap.open('http://0.0.0.0:4747/mjpegfeed?960x720')
             if not self._cap.isOpened():
                 raise RuntimeError('Camera could not be opened')
